@@ -2,7 +2,7 @@ package com.adrianovsilva99.order;
 
 import com.adrianovsilva99.entities.Order;
 import com.adrianovsilva99.services.OrderService;
-import com.adrianovsilva99.services.ShippingService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -15,6 +15,9 @@ import java.util.Scanner;
 @SpringBootApplication
 @ComponentScan({"com.adrianovsilva99"})
 public class OrderApplication implements CommandLineRunner {
+
+	@Autowired
+	private OrderService orderService;
 
 	public static void main(String[] args) {
 		SpringApplication.run(OrderApplication.class, args);
@@ -33,10 +36,8 @@ public class OrderApplication implements CommandLineRunner {
 		double discount = sc.nextDouble();
 
 		Order order = new Order(code, basic, discount);
-		OrderService orderService = new OrderService();
-		ShippingService shippingService = new ShippingService();
 
-		double total = orderService.total(order) + shippingService.shipment(order);;
+		double total = orderService.total(order);
 
 		System.out.printf("Pedido codigo %d%n", code);
 		System.out.printf("Valor total: R$ %.2f%n", total);
